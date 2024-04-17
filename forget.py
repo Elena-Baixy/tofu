@@ -42,7 +42,7 @@ def main(cfg):
     num_devices = int(os.environ.get('WORLD_SIZE', 1))
     print(f"num_devices: {num_devices}")
 
-    if os.environ.get('LOCAL_RANK') is not None:
+    if os.environ.get('LOCAL_RANK') is None: #FIXME
         local_rank = int(os.environ.get('LOCAL_RANK', '0'))
         device_map = {'': local_rank}
 
@@ -68,11 +68,11 @@ def main(cfg):
     print("Saving to: ", cfg.save_dir)
     print("######################")
 
-
-    if os.path.exists(cfg.save_dir):
-        print("Directory already exists")
-        if not cfg.overwrite_dir:
-            exit()
+    #FIXME: don't know why we need this?
+    # if os.path.exists(cfg.save_dir):
+    #     print("Directory already exists")
+    #     if not cfg.overwrite_dir:
+    #         exit()
 
     max_length = 500
     if cfg.forget_loss == "dpo":
@@ -104,7 +104,7 @@ def main(cfg):
             save_steps=steps_per_epoch,
             save_only_model=True,
             ddp_find_unused_parameters= False,
-            deepspeed='config/ds_config.json',
+            # deepspeed='config/ds_config.json',
             weight_decay = cfg.weight_decay,
             eval_steps = steps_per_epoch,
             evaluation_strategy = "steps" if cfg.eval_while_train else "no",
@@ -132,6 +132,7 @@ def main(cfg):
 
         print("Loading from checkpoint")
         model = AutoModelForCausalLM.from_pretrained(cfg.model_path, config=config, use_flash_attention_2=model_cfg["flash_attention2"]=="true", torch_dtype=torch.bfloat16, trust_remote_code = True)
+        breakpoint()
         if cfg.forget_loss == "KL":
             oracle_model = AutoModelForCausalLM.from_pretrained(cfg.model_path, config=config, use_flash_attention_2=model_cfg["flash_attention2"]=="true", torch_dtype=torch.bfloat16, trust_remote_code = True)
 

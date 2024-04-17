@@ -14,6 +14,7 @@ import numpy as np
 
 def eval_perturbation_ratio(eval_dataloader, perturb_dataloader, model):
     eval_logs = {}
+    # breakpoint()
     for batch, perturb_batch in tqdm(zip(eval_dataloader, perturb_dataloader)):
         input_ids, labels, attention_mask, indices = batch
         batch = {"input_ids": input_ids, "labels": labels, "attention_mask": attention_mask}
@@ -234,7 +235,8 @@ def main(cfg):
                 model = AutoModelForCausalLM.from_pretrained(model_id, config=config, use_flash_attention_2=model_cfg["flash_attention2"]=="true", torch_dtype=torch.bfloat16, trust_remote_code = True, device_map=device_map)
             else:
                 print(f"Loading checkpoint from {cfg.model_path}")
-                model = AutoModelForCausalLM.from_pretrained(cfg.model_path, config=config, use_flash_attention_2=model_cfg["flash_attention2"]=="true", torch_dtype=torch.bfloat16, trust_remote_code = True, device_map=device_map)
+                model = AutoModelForCausalLM.from_pretrained(cfg.model_path, config=config, use_flash_attention_2=model_cfg["flash_attention2"]=="true", torch_dtype=torch.bfloat16, trust_remote_code = True,device_map="auto") #FIXME: delete device_map
+                # breakpoint()
         except Exception as e:
             print(e)
             continue

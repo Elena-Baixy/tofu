@@ -3,7 +3,6 @@ from torch import nn
 from transformers import Trainer
 import torch.nn.functional as F
 import copy, os
-import deepspeed
 from evaluate_util import get_dataloader, get_all_evals
 import copy
 import json 

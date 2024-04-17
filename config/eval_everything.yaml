@@ -1,7 +1,8 @@
-model_path: unlearning_ckpt2/ft_model_10_epochs_inst_lr1e-3
+model_path: /scratch/mihalcea_root/mihalcea0/smallyan/tofu/data/forget/ft_epoch5_lr2e-05_phi_full_wd0.01/grad_diff_2e-05_full_5
 model_family: llama2-7b
+model_dir: None
 
-save_dir: ${model_path}/eval_results/ds_size${ds_size}
+save_dir: ${model_dir}/eval_results/ds_size${ds_size}
 
 #dataset path for each of the 4 datasets to be evaluated
 data_path: [locuslab/TOFU, locuslab/TOFU, locuslab/TOFU, locuslab/TOFU]
@@ -32,7 +33,7 @@ ds_size: 300
 overwrite: true
 use_pretrained: false
 
-batch_size: 30
+batch_size: 4
 reinitialize_weights: false
 
 retain_result: null

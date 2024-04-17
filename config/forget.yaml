@@ -1,5 +1,5 @@
 model_family: llama2-7b
-model_path: null
+model_path: /scratch/mihalcea_root/mihalcea0/smallyan/tofu/data/ft_epoch5_lr2e-05_phi_full_wd0.01/
 LoRA:
   r: 0
   alpha: 32
@@ -11,7 +11,7 @@ data_path: locuslab/TOFU
 batch_size: 16
 gradient_accumulation_steps: 4
 num_epochs: 5
-forget_loss: grad_ascent
+forget_loss: grad_diff
 
 save_dir: ${model_path}/${forget_loss}_${lr}_${split}_${num_epochs}
 overwrite_dir: false
